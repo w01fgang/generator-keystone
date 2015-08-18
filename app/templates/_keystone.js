@@ -22,8 +22,10 @@ keystone.init({
 	'brand': '<%= projectName %>',
 	<% if (preprocessor === 'sass') { %>
 	'sass': 'public',
-	<% } else { %>
+	<% } else if (preprocessor === 'less') { %>
 	'less': 'public',
+	<% } else { %>
+	'stylus': 'public',
 	<% } %>'static': 'public',
 	'favicon': 'public/favicon.ico',
 	'views': 'templates/views',<% if (viewEngine === 'nunjucks') { %>
@@ -47,8 +49,7 @@ keystone.init({
 	'auto update': true,
 	'session': true,
 	'auth': true,
-	'user model': '<%= userModel %>',
-	'cookie secret': '<%= cookieSecret %>'
+	'user model': '<%= userModel %>'
 
 });
 <% if (includeGuideComments) { %>
@@ -70,10 +71,11 @@ keystone.set('locals', {
 // Load your project's Routes
 <% } %>
 keystone.set('routes', require('./routes'));
+<% if (includeEmail) { %>
 <% if (includeGuideComments) { %>
 // Setup common locals for your emails. The following are required by Keystone's
 // default email templates, you may remove them if you're using your own.
-<% } %><% if (includeEmail) { %>
+<% } %>
 keystone.set('email locals', {
 	logo_src: '/images/logo-email.gif',
 	logo_width: 194,
